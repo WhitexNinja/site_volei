@@ -1,17 +1,17 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const [partidas, setPartidas] = useState([]);
-
-useEffect(() => {
-  fetch('http://localhost:3000/partidas')
-    .then(res => res.json())
-    .then(setPartidas)
-    .catch(() => Alert.alert("Erro ao carregar partidas"));
-}, []);
-
 export default function PartidasScreen() {
-const navigation = useNavigation();
+  const [partidas, setPartidas] = useState([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetch('http://localhost:3000/partidas')
+      .then(res => res.json())
+      .then(setPartidas)
+      .catch(() => Alert.alert("Erro ao carregar partidas"));
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -36,15 +36,24 @@ const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      {/* Botão para criar nova partida */}
+      <View style={styles.topButtons}>
+        <Button 
+          title="➕ Nova Partida" 
+          onPress={() => navigation.navigate('CriarPartida')} 
+        />
+        <Button 
+          title="🏆 Ver Classificação" 
+          onPress={() => navigation.navigate('Classificacao')} 
+        />
+      </View>
+
+      {/* Lista de partidas */}
       <FlatList
-        data={partidasMock.sort((a, b) => new Date(a.data) - new Date(b.data))}
-        keyExtractor={(item) => item.id}
+        data={partidas.sort((a, b) => new Date(a.data) - new Date(b.data))}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
-      />
-      <Button 
-        title="Ver Classificação" 
-        onPress={() => navigation.navigate('Classificacao')} 
       />
     </View>
   );
@@ -53,6 +62,12 @@ const navigation = useNavigation();
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  topButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    marginBottom: 10
   },
   listContainer: {
     padding: 16,
