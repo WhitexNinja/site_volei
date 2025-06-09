@@ -1,44 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const equipesMock = [
-  {
-    nome: 'Equipe A',
-    partidas: 1,
-    vitorias: 1,
-    derrotas: 0,
-    setsVencidos: 2,
-    setsPerdidos: 1,
-    pontuacao: 3
-  },
-  {
-    nome: 'Equipe B',
-    partidas: 1,
-    vitorias: 0,
-    derrotas: 1,
-    setsVencidos: 1,
-    setsPerdidos: 2,
-    pontuacao: 1
-  },
-  {
-    nome: 'Equipe C',
-    partidas: 0,
-    vitorias: 0,
-    derrotas: 0,
-    setsVencidos: 0,
-    setsPerdidos: 0,
-    pontuacao: 0
-  },
-  {
-    nome: 'Equipe D',
-    partidas: 0,
-    vitorias: 0,
-    derrotas: 0,
-    setsVencidos: 0,
-    setsPerdidos: 0,
-    pontuacao: 0
-  }
-];
+useEffect(() => {
+  fetch('http://localhost:3000/equipes')
+    .then(res => res.json())
+    .then(setEquipes)
+    .catch(() => Alert.alert("Erro ao carregar classificação"));
+}, []);
 
 export default function ClassificacaoScreen() {
   const renderItem = ({ item, index }) => (
