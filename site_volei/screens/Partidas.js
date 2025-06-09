@@ -1,26 +1,14 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const partidasMock = [
-  {
-    id: '1',
-    equipe1: 'Equipe A',
-    equipe2: 'Equipe B',
-    data: '2025-06-08T14:00:00',
-    local: 'Praia Central',
-    placar: '21x18, 18x21, 15x13',
-    status: 'Concluída'
-  },
-  {
-    id: '2',
-    equipe1: 'Equipe C',
-    equipe2: 'Equipe D',
-    data: '2025-06-09T10:00:00',
-    local: 'Praia Norte',
-    placar: '',
-    status: 'Aguardando'
-  }
-];
+const [partidas, setPartidas] = useState([]);
+
+useEffect(() => {
+  fetch('http://localhost:3000/partidas')
+    .then(res => res.json())
+    .then(setPartidas)
+    .catch(() => Alert.alert("Erro ao carregar partidas"));
+}, []);
 
 export default function PartidasScreen() {
 const navigation = useNavigation();
