@@ -1,14 +1,16 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-
-useEffect(() => {
-  fetch('http://localhost:3000/equipes')
-    .then(res => res.json())
-    .then(setEquipes)
-    .catch(() => Alert.alert("Erro ao carregar classificação"));
-}, []);
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
 
 export default function ClassificacaoScreen() {
+  const [equipes, setEquipes] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/equipes')
+      .then(res => res.json())
+      .then(setEquipes)
+      .catch(() => Alert.alert("Erro", "Falha ao carregar classificação"));
+  }, []);
+
   const renderItem = ({ item, index }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{index + 1}</Text>
@@ -19,9 +21,17 @@ export default function ClassificacaoScreen() {
       <Text style={styles.cell}>{item.setsVencidos}</Text>
       <Text style={styles.cell}>{item.setsPerdidos}</Text>
       <Text style={styles.cell}>{item.setsVencidos - item.setsPerdidos}</Text>
-      <Text style={[styles.cell, styles.pointsCell]}>{item.pontuacao}</Text>
+      <Text style={[styles.cell, styles.pointsCell]}>{item.pontos}</Text>
     </View>
   );
+
+  const ordenadas = [...equipes].sort((a, b) => {
+    if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+    const saldoA = a.setsVencidos - a.setsPerdidos;
+    const saldoB = b.setsVencidos - b.setsPerdidos;
+    if (saldoA !== saldoB) return saldoB - saldoA;
+    return b.setsVencidos - a.setsVencidos;
+  });
 
   return (
     <View style={styles.container}>
@@ -37,14 +47,8 @@ export default function ClassificacaoScreen() {
         <Text style={[styles.cell, styles.headerCell]}>Pts</Text>
       </View>
       <FlatList
-        data={equipesMock.sort((a, b) => {
-          if (b.pontuacao !== a.pontuacao) return b.pontuacao - a.pontuacao;
-          if ((b.setsVencidos - b.setsPerdidos) !== (a.setsVencidos - a.setsPerdidos)) {
-            return (b.setsVencidos - b.setsPerdidos) - (a.setsVencidos - a.setsPerdidos);
-          }
-          return b.setsVencidos - a.setsVencidos;
-        })}
-        keyExtractor={(item) => item.nome}
+        data={ordenadas}
+        keyExtractor={item => item.nome}
         renderItem={renderItem}
       />
     </View>
@@ -52,11 +56,7 @@ export default function ClassificacaoScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#fff'
-  },
+  container: { flex: 1, padding: 10, backgroundColor: '#fff' },
   header: {
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -70,23 +70,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee'
   },
-  cell: {
-    width: 30,
-    textAlign: 'center',
-    fontSize: 12
-  },
-  headerCell: {
-    fontWeight: 'bold'
-  },
-  teamCell: {
-    width: 100,
-    textAlign: 'left',
-    paddingLeft: 5
-  },
-  teamHeader: {
-    width: 100
-  },
-  pointsCell: {
-    fontWeight: 'bold'
-  }
+  cell: { width: 30, textAlign: 'center', fontSize: 12 },
+  headerCell: { fontWeight: 'bold' },
+  teamCell: { width: 100, textAlign: 'left', paddingLeft: 5 },
+  teamHeader: { width: 100 },
+  pointsCell: { fontWeight: 'bold' }
 });
