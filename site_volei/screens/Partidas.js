@@ -11,7 +11,7 @@ export default function PartidasScreen() {
       .then(res => res.json())
       .then(setPartidas)
       .catch(() => Alert.alert("Erro ao carregar partidas"));
-  }, []);
+  }, [setPartidas]);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -36,7 +36,6 @@ export default function PartidasScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Botão para criar nova partida */}
       <View style={styles.topButtons}>
         <Button 
           title="➕ Nova Partida" 
@@ -48,7 +47,6 @@ export default function PartidasScreen() {
         />
       </View>
 
-      {/* Lista de partidas */}
       <FlatList
         data={partidas.sort((a, b) => new Date(a.data) - new Date(b.data))}
         keyExtractor={(item) => item.id.toString()}

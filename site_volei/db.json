@@ -1,24 +1,5 @@
 {
   "partidas": [
-    {
-      "id": 1749488884956,
-      "equipe1": "Brasil",
-      "equipe2": "Argentina",
-      "data": "2025/06/10T11:30:00",
-      "local": "a",
-      "placar": "",
-      "status": "Aguardando",
-      "sets": []
-    },
-    {
-      "id": 1749489164392,
-      "equipe1": "a",
-      "equipe2": "a",
-      "data": "aTa:00",
-      "local": "a",
-      "placar": "",
-      "status": "Aguardando",
-      "sets": []
-    }
+  
   ]
 }
