@@ -40,23 +40,19 @@ export default function RegistrarPlacarScreen() {
   };
 
   const verificarResultado = async () => {
-    let v1 = 0, v2 = 0, s1 = 0, s2 = 0;
+    let v1 = 0, v2 = 0;
 
-    for (let i = 0; i < 3; i++) {
-      const p1 = parseInt(pontos[i].equipe1), p2 = parseInt(pontos[i].equipe2);
-      if (isNaN(p1) || isNaN(p2)) continue;
-
-      const limite = i === 2 ? 15 : 21;
-      if (Math.max(p1, p2) < limite || Math.abs(p1 - p2) < 2) {
-        continue;
+    pontos.forEach((set, i) => {
+      const p1 = parseInt(set.equipe1);
+      const p2 = parseInt(set.equipe2);
+      if (!isNaN(p1) && !isNaN(p2)) {
+        const limite = i === 2 ? 15 : 21;
+        if (Math.max(p1, p2) >= limite && Math.abs(p1 - p2) >= 2) {
+          if (p1 > p2) v1++;
+          else v2++;
+        }
       }
-
-      if (p1 > p2) {
-        v1++; s1++; s2++;
-      } else {
-        v2++; s1++; s2++;
-      }
-    }
+    });
 
     if (v1 < 2 && v2 < 2) {
       Alert.alert("Erro", "Placar inválido. Uma equipe precisa vencer 2 sets.");
@@ -73,7 +69,6 @@ export default function RegistrarPlacarScreen() {
       .map(p => `${p.equipe1}x${p.equipe2}`)
       .join(', ');
 
-    // Atualiza a partida
     await fetch(`http://localhost:3000/partidas/${partidaId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
