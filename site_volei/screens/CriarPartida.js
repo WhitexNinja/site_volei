@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 export default function CriarPartidaScreen() {
   const navigation = useNavigation();
@@ -28,20 +29,45 @@ export default function CriarPartidaScreen() {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/partidas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novaPartida),
-      });
-
-      if (response.ok) {
-        Alert.alert('Sucesso', 'Partida criada com sucesso!');
-        navigation.goBack();
-      } else {
+      // 1. Criar a partida
+      const response = await axios.post('http://localhost:3000/partidas', novaPartida);
+      if (!response.status.toString().startsWith('2')) {
         throw new Error('Erro ao criar partida');
       }
+
+      // 2. Verificar/criar equipe1
+      const res1 = await axios.get(`http://localhost:3000/equipes?nome=${encodeURIComponent(equipe1)}`);
+      if (res1.data.length === 0) {
+        await axios.post('http://localhost:3000/equipes', {
+          nome: equipe1,
+          pontos: 0,
+          partidas: 0,
+          vitorias: 0,
+          derrotas: 0,
+          setsVencidos: 0,
+          setsPerdidos: 0
+        });
+      }
+
+      // 3. Verificar/criar equipe2
+      const res2 = await axios.get(`http://localhost:3000/equipes?nome=${encodeURIComponent(equipe2)}`);
+      if (res2.data.length === 0) {
+        await axios.post('http://localhost:3000/equipes', {
+          nome: equipe2,
+          pontos: 0,
+          partidas: 0,
+          vitorias: 0,
+          derrotas: 0,
+          setsVencidos: 0,
+          setsPerdidos: 0
+        });
+      }
+
+      Alert.alert('Sucesso', 'Partida e equipes criadas com sucesso!');
+      navigation.goBack();
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível criar a partida');
+      console.error(error);
+      Alert.alert('Erro', 'Não foi possível criar a partida ou equipes.');
     }
   };
 
@@ -51,8 +77,18 @@ export default function CriarPartidaScreen() {
       <TextInput style={styles.input} placeholder="Equipe 1" value={equipe1} onChangeText={setEquipe1} />
       <TextInput style={styles.input} placeholder="Equipe 2" value={equipe2} onChangeText={setEquipe2} />
       <View style={styles.row}>
-        <TextInput style={[styles.input, { flex: 1, marginRight: 10 }]} placeholder="Data (AAAA-MM-DD)" value={data} onChangeText={setData} />
-        <TextInput style={[styles.input, { flex: 1 }]} placeholder="Hora (HH:MM)" value={hora} onChangeText={setHora} />
+        <TextInput
+          style={[styles.input, { flex: 1, marginRight: 10 }]}
+          placeholder="Data (AAAA-MM-DD)"
+          value={data}
+          onChangeText={setData}
+        />
+        <TextInput
+          style={[styles.input, { flex: 1 }]}
+          placeholder="Hora (HH:MM)"
+          value={hora}
+          onChangeText={setHora}
+        />
       </View>
       <TextInput style={styles.input} placeholder="Local da partida" value={local} onChangeText={setLocal} />
       <Button title="Criar Partida" onPress={criarPartida} />

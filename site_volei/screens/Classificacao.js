@@ -5,7 +5,7 @@ export default function ClassificacaoScreen() {
   const [equipes, setEquipes] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/partidas')
+    fetch('http://localhost:3000/equipes')
       .then(res => res.json())
       .then(setEquipes)
       .catch(() => Alert.alert("Erro", "Falha ao carregar classificação"));

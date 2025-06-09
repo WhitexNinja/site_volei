@@ -11,7 +11,7 @@ export default function PartidasScreen() {
       .then(res => res.json())
       .then(setPartidas)
       .catch(() => Alert.alert("Erro ao carregar partidas"));
-  }, [setPartidas]);
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -20,9 +20,7 @@ export default function PartidasScreen() {
         📅 {new Date(item.data).toLocaleString()} | 📍 {item.local}
       </Text>
       <Text style={styles.status}>Status: {item.status}</Text>
-      {item.placar ? (
-        <Text style={styles.placar}>Placar: {item.placar}</Text>
-      ) : null}
+      {item.placar && <Text style={styles.placar}>Placar: {item.placar}</Text>}
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('RegistrarPlacar', { partidaId: item.id })}
@@ -37,16 +35,9 @@ export default function PartidasScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.topButtons}>
-        <Button 
-          title="➕ Nova Partida" 
-          onPress={() => navigation.navigate('CriarPartida')} 
-        />
-        <Button 
-          title="🏆 Ver Classificação" 
-          onPress={() => navigation.navigate('Classificacao')} 
-        />
+        <Button title="➕ Nova Partida" onPress={() => navigation.navigate('CriarPartida')} />
+        <Button title="🏆 Ver Classificação" onPress={() => navigation.navigate('Classificacao')} />
       </View>
-
       <FlatList
         data={partidas.sort((a, b) => new Date(a.data) - new Date(b.data))}
         keyExtractor={(item) => item.id.toString()}
@@ -58,18 +49,13 @@ export default function PartidasScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   topButtons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 10,
-    marginBottom: 10
+    marginVertical: 10
   },
-  listContainer: {
-    padding: 16,
-  },
+  listContainer: { padding: 16 },
   card: {
     backgroundColor: '#f9f9f9',
     borderRadius: 12,
@@ -77,22 +63,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#666'
-  },
-  status: {
-    marginTop: 8,
-    fontWeight: '600'
-  },
-  placar: {
-    marginTop: 4,
-    color: '#444'
-  },
+  title: { fontSize: 18, fontWeight: 'bold' },
+  subtitle: { fontSize: 14, color: '#666' },
+  status: { marginTop: 8, fontWeight: '600' },
+  placar: { marginTop: 4, color: '#444' },
   button: {
     marginTop: 12,
     backgroundColor: '#007AFF',
@@ -100,8 +74,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center'
   },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold'
-  }
+  buttonText: { color: '#fff', fontWeight: 'bold' }
 });

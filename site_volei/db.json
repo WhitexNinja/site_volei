@@ -1,5 +1,104 @@
 {
   "partidas": [
-  
+    {
+      "id": 1749508628715,
+      "equipe1": "Sport",
+      "equipe2": "Santa Cruz",
+      "data": "2025-06-10T10:15:00",
+      "local": "Arruda",
+      "placar": "",
+      "status": "Aguardando",
+      "sets": []
+    },
+    {
+      "id": 1749509468640,
+      "equipe1": "Nautico",
+      "equipe2": "São Paulo",
+      "data": "2025-09-07T16:00:00",
+      "local": "Maracanã",
+      "placar": "",
+      "status": "Aguardando",
+      "sets": []
+    },
+    {
+      "id": 1749510502749,
+      "equipe1": "Corintias",
+      "equipe2": "Santos",
+      "data": "2025-10-05T20:20:00",
+      "local": "Vila Belmiro",
+      "placar": "",
+      "status": "Aguardando",
+      "sets": []
+    },
+    {
+      "id": 1749510800968,
+      "equipe1": "Santa Cruz",
+      "equipe2": "Sport",
+      "data": "2022-05-20T11:20:00",
+      "local": "juiz dd fora",
+      "placar": "",
+      "status": "Aguardando",
+      "sets": []
+    }
+  ],
+  "equipes": [
+    {
+      "nome": "Sport",
+      "pontos": 0,
+      "partidas": 2,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "nome": "Santa Cruz",
+      "pontos": 0,
+      "partidas": 2,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "6f5c",
+      "nome": "Nautico",
+      "pontos": 0,
+      "partidas": 1,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "32ca",
+      "nome": "São Paulo",
+      "pontos": 0,
+      "partidas": 1,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "1af8",
+      "nome": "Corintias",
+      "pontos": 0,
+      "partidas": 1,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "f10b",
+      "nome": "Santos",
+      "pontos": 0,
+      "partidas": 1,
+      "vitorias": 0,
+      "derrotas": 0,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    }
   ]
 }
