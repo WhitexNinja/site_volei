@@ -1,3 +1,4 @@
+// Partidas.js
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -62,6 +63,10 @@ export default function PartidasScreen() {
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
+        {/* Bug Simples 3: Botão quebrado - não faz nada */}
+        <Button title="Botão Quebrado" onPress={() => {}} />
+        {/* Bug Simples 4: Texto sobreposto */}
+        <Text style={{ position: 'absolute', top: 10, left: 10 }}>Sobreposto</Text>
     </View>
   );
 }
