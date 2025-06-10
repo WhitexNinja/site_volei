@@ -1,4 +1,3 @@
-// screens/Classificacao.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert, Button } from 'react-native';
 import { BASE_URL } from '../config';

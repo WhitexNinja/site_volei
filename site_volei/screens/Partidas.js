@@ -1,4 +1,3 @@
-// screens/Partidas.js
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';

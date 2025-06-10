@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View, Text, TextInput, Button, Alert,
+  StyleSheet, ActivityIndicator, TouchableOpacity
+} from 'react-native';
 import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
-
-const API_URL = 'http://192.168.0.101:3000'; // Ajuste para o IP do seu servidor JSON Server
+import { BASE_URL } from '../config';
 
 export default function RegistrarPlacar() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { id } = route.params || {};
+  const { partidaId } = route.params || {};
 
   const [partida, setPartida] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,13 +18,13 @@ export default function RegistrarPlacar() {
   const [placarTime2, setPlacarTime2] = useState('');
 
   useEffect(() => {
-    if (!id) {
+    if (!partidaId) {
       Alert.alert('Erro', 'ID da partida não foi passado!');
       navigation.goBack();
       return;
     }
 
-    axios.get(`${API_URL}/partidas/${id}`)
+    axios.get(`${BASE_URL}/partidas/${partidaId}`)
       .then(res => {
         setPartida(res.data);
         setLoading(false);
@@ -32,7 +34,7 @@ export default function RegistrarPlacar() {
         console.log('Erro ao buscar partida:', err);
         navigation.goBack();
       });
-  }, [id]);
+  }, [partidaId]);
 
   const salvarPlacar = () => {
     const p1 = parseInt(placarTime1);
@@ -43,14 +45,13 @@ export default function RegistrarPlacar() {
       return;
     }
 
-    // Atualiza o placar no backend
-    axios.patch(`${API_URL}/partidas/${id}`, {
+    axios.patch(`${BASE_URL}/partidas/${partidaId}`, {
       placarTime1: p1,
       placarTime2: p2,
-      status: 'finalizada',
+      status: 'Concluída'
     })
       .then(() => {
-        Alert.alert('Sucesso', 'Placar registrado!');
+        Alert.alert('Sucesso', 'Placar registrado com sucesso!');
         navigation.goBack();
       })
       .catch(err => {
@@ -62,27 +63,21 @@ export default function RegistrarPlacar() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  if (!partida) {
-    return (
-      <View style={styles.container}>
-        <Text>Partida não encontrada.</Text>
+        <ActivityIndicator size="large" color="#007AFF" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Registrar Placar</Text>
-      <Text>{partida.time1} vs {partida.time2}</Text>
+      <Text style={styles.title}>Registrar Placar</Text>
+      <Text style={styles.subtitle}>
+        {partida.equipe1} 🆚 {partida.equipe2}
+      </Text>
 
       <TextInput
         style={styles.input}
-        placeholder={`Placar ${partida.time1}`}
+        placeholder={`Placar ${partida.equipe1}`}
         keyboardType="numeric"
         value={placarTime1}
         onChangeText={setPlacarTime1}
@@ -90,13 +85,15 @@ export default function RegistrarPlacar() {
 
       <TextInput
         style={styles.input}
-        placeholder={`Placar ${partida.time2}`}
+        placeholder={`Placar ${partida.equipe2}`}
         keyboardType="numeric"
         value={placarTime2}
         onChangeText={setPlacarTime2}
       />
 
-      <Button title="Salvar Placar" onPress={salvarPlacar} />
+      <TouchableOpacity style={styles.button} onPress={salvarPlacar}>
+        <Text style={styles.buttonText}>Salvar Placar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -104,21 +101,40 @@ export default function RegistrarPlacar() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: '#fff',
+    justifyContent: 'center'
   },
-  titulo: {
-    fontSize: 24,
+  title: {
+    fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center'
+  },
+  subtitle: {
+    fontSize: 16,
     marginBottom: 20,
     textAlign: 'center',
+    color: '#555'
   },
   input: {
     borderWidth: 1,
-    borderColor: '#aaa',
-    marginVertical: 10,
-    padding: 8,
-    fontSize: 18,
-    borderRadius: 4,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 15
   },
+  button: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16
+  }
 });

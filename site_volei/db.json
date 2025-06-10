@@ -1,11 +1,23 @@
 {
   "partidas": [
     {
-      "id": 1749513887044,
+      "id": "1749513887044",
       "equipe1": "Sport",
       "equipe2": "Santa Cruz ",
       "data": "2025-10-06T11:50:00",
       "local": "Ilha do retiro ",
+      "placar": "",
+      "status": "Concluída",
+      "sets": [],
+      "placarTime1": 2,
+      "placarTime2": 0
+    },
+    {
+      "id": 1749549138105,
+      "equipe1": "Náutico ",
+      "equipe2": "Fortaleza",
+      "data": "2025-10-12T20:30:00",
+      "local": "Arena de Pernambuco ",
       "placar": "",
       "status": "Aguardando",
       "sets": []
@@ -15,6 +27,26 @@
     {
       "id": "5d13",
       "nome": "Sport",
+      "pontos": 5,
+      "partidas": 1,
+      "vitorias": 1,
+      "derrotas": 0,
+      "setsVencidos": 2,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "4071",
+      "nome": "Santa Cruz ",
+      "pontos": 0,
+      "partidas": 1,
+      "vitorias": 0,
+      "derrotas": 1,
+      "setsVencidos": 0,
+      "setsPerdidos": 0
+    },
+    {
+      "id": "cefe",
+      "nome": "Náutico ",
       "pontos": 0,
       "partidas": 0,
       "vitorias": 0,
@@ -23,8 +55,8 @@
       "setsPerdidos": 0
     },
     {
-      "id": "4071",
-      "nome": "Santa Cruz ",
+      "id": "d5cc",
+      "nome": "Fortaleza",
       "pontos": 0,
       "partidas": 0,
       "vitorias": 0,
