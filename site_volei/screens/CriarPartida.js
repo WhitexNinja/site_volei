@@ -1,3 +1,4 @@
+// CriarPartida.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +16,14 @@ export default function CriarPartidaScreen() {
   const criarPartida = async () => {
     if (!equipe1 || !equipe2 || !data || !hora || !local) {
       Alert.alert('Erro', 'Preencha todos os campos');
+      return;
+    }
+
+    // Bug complexo: Injeção de SQL (simulada)
+    // Se o nome da equipe contiver uma aspa simples, isso pode levar a erros
+    // ou comportamentos inesperados no banco de dados (se não for tratado corretamente).
+    if (equipe1.includes("'") || equipe2.includes("'")) {
+      Alert.alert('Erro', 'Nomes de equipes inválidos.');
       return;
     }
 
@@ -93,6 +102,8 @@ export default function CriarPartidaScreen() {
       </View>
       <TextInput style={styles.input} placeholder="Local da partida" value={local} onChangeText={setLocal} />
       <Button title="Criar Partida" onPress={criarPartida} />
+        {/* Bug Simples 2: Erro visual - texto desalinhado */}
+        <Text style={{ textAlign: 'right' }}>© 2024</Text>
     </View>
   );
 }
