@@ -1,3 +1,4 @@
+// Classificacao.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert, Button } from 'react-native';
 import { BASE_URL } from '../config';
@@ -57,6 +58,8 @@ export default function ClassificacaoScreen() {
         keyExtractor={item => item.nome}
         renderItem={renderItem}
       />
+        {/* Bug Simples 1: Texto incorreto */}
+        <Text>Classificação do Torneio (Incorreto)</Text>
     </View>
   );
 }
