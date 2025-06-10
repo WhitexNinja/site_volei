@@ -1,7 +1,9 @@
+// screens/CriarPartida.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { BASE_URL } from '../config';
 
 export default function CriarPartidaScreen() {
   const navigation = useNavigation();
@@ -30,15 +32,15 @@ export default function CriarPartidaScreen() {
 
     try {
       // 1. Criar a partida
-      const response = await axios.post('http://localhost:3000/partidas', novaPartida);
+      const response = await axios.post(`${BASE_URL}/partidas`, novaPartida);
       if (!response.status.toString().startsWith('2')) {
         throw new Error('Erro ao criar partida');
       }
 
       // 2. Verificar/criar equipe1
-      const res1 = await axios.get(`http://localhost:3000/equipes?nome=${encodeURIComponent(equipe1)}`);
+      const res1 = await axios.get(`${BASE_URL}/equipes?nome=${encodeURIComponent(equipe1)}`);
       if (res1.data.length === 0) {
-        await axios.post('http://localhost:3000/equipes', {
+        await axios.post(`${BASE_URL}/equipes`, {
           nome: equipe1,
           pontos: 0,
           partidas: 0,
@@ -50,9 +52,9 @@ export default function CriarPartidaScreen() {
       }
 
       // 3. Verificar/criar equipe2
-      const res2 = await axios.get(`http://localhost:3000/equipes?nome=${encodeURIComponent(equipe2)}`);
+      const res2 = await axios.get(`${BASE_URL}/equipes?nome=${encodeURIComponent(equipe2)}`);
       if (res2.data.length === 0) {
-        await axios.post('http://localhost:3000/equipes', {
+        await axios.post(`${BASE_URL}/equipes`, {
           nome: equipe2,
           pontos: 0,
           partidas: 0,

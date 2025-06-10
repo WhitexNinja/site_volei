@@ -1,14 +1,20 @@
+// screens/Classificacao.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert, Button } from 'react-native';
+import { BASE_URL } from '../config';
 
 export default function ClassificacaoScreen() {
   const [equipes, setEquipes] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:3000/equipes')
+  const carregarEquipes = () => {
+    fetch(`${BASE_URL}/equipes`)
       .then(res => res.json())
       .then(setEquipes)
       .catch(() => Alert.alert("Erro", "Falha ao carregar classificação"));
+  };
+
+  useEffect(() => {
+    carregarEquipes();
   }, []);
 
   const renderItem = ({ item, index }) => (
@@ -35,6 +41,7 @@ export default function ClassificacaoScreen() {
 
   return (
     <View style={styles.container}>
+      <Button title="Atualizar" onPress={carregarEquipes} />
       <View style={styles.header}>
         <Text style={[styles.cell, styles.headerCell]}>#</Text>
         <Text style={[styles.cell, styles.headerCell, styles.teamHeader]}>Equipe</Text>

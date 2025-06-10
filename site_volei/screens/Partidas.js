@@ -1,29 +1,48 @@
-import React, { useState, useEffect } from 'react';
+// screens/Partidas.js
+import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { BASE_URL } from '../config';
 
 export default function PartidasScreen() {
   const [partidas, setPartidas] = useState([]);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    fetch('http://localhost:3000/partidas')
+  const carregarPartidas = useCallback(() => {
+    fetch(`${BASE_URL}/partidas`)
       .then(res => res.json())
-      .then(setPartidas)
+      .then(data => setPartidas(data))
       .catch(() => Alert.alert("Erro ao carregar partidas"));
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      carregarPartidas();
+    }, [carregarPartidas])
+  );
+
+  const formatarData = (dataISO) => {
+    const d = new Date(dataISO);
+    return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.equipe1} 🆚 {item.equipe2}</Text>
       <Text style={styles.subtitle}>
-        📅 {new Date(item.data).toLocaleString()} | 📍 {item.local}
+        📅 {formatarData(item.data)} | 📍 {item.local}
       </Text>
       <Text style={styles.status}>Status: {item.status}</Text>
       {item.placar && <Text style={styles.placar}>Placar: {item.placar}</Text>}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('RegistrarPlacar', { partidaId: item.id })}
+        onPress={() => {
+          if (item.id) {
+            navigation.navigate('RegistrarPlacar', { partidaId: item.id });
+          } else {
+            Alert.alert('Erro', 'ID da partida está ausente');
+          }
+        }}
       >
         <Text style={styles.buttonText}>
           {item.status === 'Concluída' ? 'Ver Detalhes' : 'Registrar Placar'}
@@ -40,7 +59,7 @@ export default function PartidasScreen() {
       </View>
       <FlatList
         data={partidas.sort((a, b) => new Date(a.data) - new Date(b.data))}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id?.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
